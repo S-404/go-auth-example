@@ -1,0 +1,129 @@
+basePath: /
+definitions:
+  github_com_s-404_go-auth-example_pkg_dto.AuthRequestDto:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  github_com_s-404_go-auth-example_pkg_dto.AuthResponseDto:
+    properties:
+      accessToken:
+        type: string
+    required:
+    - accessToken
+    type: object
+  github_com_s-404_go-auth-example_pkg_dto.EmptyResponse:
+    type: object
+host: localhost:8082
+info:
+  contact: {}
+  description: API Server for auth-server-example Application
+  title: auth-server-example App API
+  version: "1.0"
+paths:
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: login
+      operationId: login
+      parameters:
+      - description: credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_s-404_go-auth-example_pkg_dto.AuthRequestDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_s-404_go-auth-example_pkg_dto.AuthResponseDto'
+        "400":
+          description: '`ERR_CLIENT_REQUEST_VALIDATION`: validation error, `ERR_CLIENT_BAD_REQUEST`:
+            wrong credentials'
+        default:
+          description: '`ERR_APP`: internal error'
+      summary: Login
+      tags:
+      - AUTH
+  /api/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: logout
+      operationId: logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_s-404_go-auth-example_pkg_dto.EmptyResponse'
+        "401":
+          description: '`ERR_CLIENT_AUTH`: unauthed'
+      summary: Logout
+      tags:
+      - AUTH
+  /api/auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: refresh access token
+      operationId: refreshAccessToken
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_s-404_go-auth-example_pkg_dto.AuthResponseDto'
+        "401":
+          description: '`ERR_CLIENT_AUTH`: unauthed'
+        default:
+          description: '`ERR_APP`: internal error'
+      summary: Refresh access token
+      tags:
+      - AUTH
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: create account
+      operationId: create-account
+      parameters:
+      - description: credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_s-404_go-auth-example_pkg_dto.AuthRequestDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_s-404_go-auth-example_pkg_dto.EmptyResponse'
+        "400":
+          description: '`ERR_CLIENT_REQUEST_VALIDATION`: validation error'
+        "409":
+          description: '`ERR_CLIENT_ENTITY_ALREADY_EXIST`: username already used'
+        default:
+          description: '`ERR_APP`: internal error'
+      summary: Register
+      tags:
+      - AUTH
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

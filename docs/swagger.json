@@ -1,0 +1,193 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API Server for auth-server-example Application",
+        "title": "auth-server-example App API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8082",
+    "basePath": "/",
+    "paths": {
+        "/api/auth/login": {
+            "post": {
+                "description": "login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Login",
+                "operationId": "login",
+                "parameters": [
+                    {
+                        "description": "credentials",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_s-404_go-auth-example_pkg_dto.AuthRequestDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_s-404_go-auth-example_pkg_dto.AuthResponseDto"
+                        }
+                    },
+                    "400": {
+                        "description": "`ERR_CLIENT_REQUEST_VALIDATION`: validation error, `ERR_CLIENT_BAD_REQUEST`: wrong credentials"
+                    },
+                    "default": {
+                        "description": "`ERR_APP`: internal error"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "description": "logout",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Logout",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_s-404_go-auth-example_pkg_dto.EmptyResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "`ERR_CLIENT_AUTH`: unauthed"
+                    }
+                }
+            }
+        },
+        "/api/auth/refresh": {
+            "post": {
+                "description": "refresh access token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Refresh access token",
+                "operationId": "refreshAccessToken",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_s-404_go-auth-example_pkg_dto.AuthResponseDto"
+                        }
+                    },
+                    "401": {
+                        "description": "`ERR_CLIENT_AUTH`: unauthed"
+                    },
+                    "default": {
+                        "description": "`ERR_APP`: internal error"
+                    }
+                }
+            }
+        },
+        "/api/auth/register": {
+            "post": {
+                "description": "create account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Register",
+                "operationId": "create-account",
+                "parameters": [
+                    {
+                        "description": "credentials",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_s-404_go-auth-example_pkg_dto.AuthRequestDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_s-404_go-auth-example_pkg_dto.EmptyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "`ERR_CLIENT_REQUEST_VALIDATION`: validation error"
+                    },
+                    "409": {
+                        "description": "`ERR_CLIENT_ENTITY_ALREADY_EXIST`: username already used"
+                    },
+                    "default": {
+                        "description": "`ERR_APP`: internal error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "github_com_s-404_go-auth-example_pkg_dto.AuthRequestDto": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_s-404_go-auth-example_pkg_dto.AuthResponseDto": {
+            "type": "object",
+            "required": [
+                "accessToken"
+            ],
+            "properties": {
+                "accessToken": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_s-404_go-auth-example_pkg_dto.EmptyResponse": {
+            "type": "object"
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
