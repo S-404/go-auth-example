@@ -1,3 +1,7 @@
+This is an example implementation of an auth server to demonstrate the jwt handling in Godot project
+
+https://github.com/S-404/godot-auth-example
+
 # config
 
 ```cp ./configs/config.example.yaml ./configs/config.yaml```
