@@ -41,18 +41,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	api := router.Group("api", h.authMiddleware)
 	{
-		room := api.Group("room")
+		action := api.Group("action")
 		{
-			room.POST("/")
-		}
-
-		user := api.Group("user")
-		{
-			user.POST("/", h.userCreate)
-			user.GET("/list", h.userList)
-			// user.GET("/:guid")
-			// user.PUT("/:guid")
-			user.DELETE("/:guid", h.userDelete)
+			action.POST("/doSmth", h.DoSmth)
 		}
 	}
 

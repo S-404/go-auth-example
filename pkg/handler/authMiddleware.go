@@ -9,11 +9,11 @@ import (
 )
 
 const (
-	AUTHORIZATION_HEADER = "Authorization"
+	AuthorizationHeader = "Authorization"
 )
 
 func (h *Handler) authMiddleware(c *gin.Context) {
-	header := c.GetHeader(AUTHORIZATION_HEADER)
+	header := c.GetHeader(AuthorizationHeader)
 	if header == "" {
 		exception.ResponseException(c, exception.AuthError("Empty Authorization Header"))
 		return
